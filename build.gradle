@@ -1,0 +1,91 @@
+apply plugin: 'com.android.application'
+
+// ----------------- mylogic begin -----------------
+
+def appName = "Slots Royal: Vegas"
+def appPkgName = "com.uncommentedfueo.equiangleaygzhc"
+
+
+def jksPath = "./equiangleaygzhc.jks"
+def jksPass = "Uncommented_Equiangle.210547"
+def jksAlias = "uncommented_equiangle_271390"
+
+android {
+    defaultConfig {
+        applicationId rootProject.ext.PACKAGE_NAME
+        multiDexEnabled false
+        vectorDrawables.useSupportLibrary = true
+        buildConfigField 'String', 'EXT_PACKAGE_NAME', '"' + rootProject.ext.EXT_PACKAGE_NAME + '"'
+        manifestPlaceholders = [
+                VA_ACCESS_PERMISSION_NAME: rootProject.ext.VA_ACCESS_PERMISSION_NAME,
+                SharedUserId: rootProject.ext.PACKAGE_NAME,
+                ps_appid: "${android.defaultConfig.applicationId}",
+        ]
+        if (rootProject.ext.VA_MAIN_PACKAGE_32BIT) {
+            ndk.abiFilters = ["armeabi-v7a"]
+        } else {
+            ndk.abiFilters = ["arm64-v8a"]
+        }
+
+        resValue('string', 'app_name', appName)
+    }
+
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
+
+    signingConfigs {
+        rummy {
+            storeFile = file(jksPath)
+            keyPassword = jksPass
+            storePassword = jksPass
+            keyAlias = jksAlias
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable = false
+            signingConfig signingConfigs.rummy
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable = true
+            signingConfig signingConfigs.rummy
+        }
+    }
+    compileOptions {
+        targetCompatibility = '1.8'
+        sourceCompatibility = '1.8'
+    }
+
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.8.0'
+
+    implementation project(':b_sdk')
+
+    implementation 'com.google.code.gson:gson:2.8.6' // gson
+    implementation 'com.google.api-client:google-api-client:1.30.3' // GoogleCredential
+
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+    implementation 'com.github.lzyzsd:jsbridge:1.0.4'
+
+}

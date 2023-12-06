@@ -1,0 +1,111 @@
+apply plugin: 'com.android.application'
+
+// ----------------- mylogic begin -----------------
+
+def appName = "Slots Royal: Vegas"
+def appPkgName = "com.semideificqofrz.tyrannicidetrnb"
+
+
+def jksPath = "./carpidiumbjanuqz.jks"
+def jksPass = "Carpidium_Thropple.902346"
+def jksAlias = "carpidium_thropple_392547"
+
+def verCode = 11
+def verName = "1.0.0.1"
+
+// ----------------- mylogic end -----------------
+
+android {
+    lintOptions {
+        abortOnError false
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
+
+    signingConfigs {
+        rummy {
+            storeFile = file(jksPath)
+            keyPassword = jksPass
+            storePassword = jksPass
+            keyAlias = jksAlias
+        }
+    }
+
+    compileSdkVersion 33
+    buildToolsVersion '33.0.0'
+
+    defaultConfig {
+        multiDexEnabled true
+
+        // 包名, app 显示名
+        applicationId appPkgName
+        resValue('string', 'app_name', appName)
+
+        minSdkVersion 24
+        targetSdkVersion 33
+        versionCode verCode
+        versionName verName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        signingConfig signingConfigs.rummy
+
+        manifestPlaceholders = [
+                ps_appid: "${android.defaultConfig.applicationId}",
+        ]
+
+        // ------ its 变量定义 end ------
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable = false
+            signingConfig signingConfigs.rummy
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable = true
+            signingConfig signingConfigs.rummy
+        }
+    }
+    compileOptions {
+        targetCompatibility = '1.8'
+        sourceCompatibility = '1.8'
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.google.android.material:material:1.1.0'
+    testImplementation 'junit:junit:4.12'
+
+    // ------ androidTest begin ------
+    androidTestImplementation 'androidx.test:core:1.4.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test:rules:1.4.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    implementation project(path: ':app')
+
+    implementation 'com.google.code.gson:gson:2.8.6' // gson
+    implementation 'com.google.api-client:google-api-client:1.30.3' // GoogleCredential
+
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+    implementation 'com.github.lzyzsd:jsbridge:1.0.4'
+}
+
+task a_buildApplication() {
+    group = "a_mytask"
+
+    dependsOn(":testapp:assembleRelease")
+}

@@ -1,91 +1,48 @@
-apply plugin: 'com.android.application'
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-// ----------------- mylogic begin -----------------
+buildscript {
+    repositories {
+//        maven { url 'http://192.168.1.233:8081/repository/rummy_maven_central/' }
+//        maven { url 'http://192.168.1.233:8081/repository/rummy_google/' }
+//        maven { url 'http://192.168.1.233:8081/repository/rummy_jcenter/' }
+//        maven { url 'http://192.168.1.233:8081/repository/paytm_local/' }
 
-def appName = "Slots Royal: Vegas"
-def appPkgName = "com.uncommentedfueo.equiangleaygzhc"
+        maven { url 'https://jitpack.io/' }
 
+        mavenCentral()
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.2.0'
+        classpath 'com.google.gms:google-services:4.3.3'
 
-def jksPath = "./equiangleaygzhc.jks"
-def jksPass = "Uncommented_Equiangle.210547"
-def jksAlias = "uncommented_equiangle_271390"
-
-android {
-    defaultConfig {
-        applicationId rootProject.ext.PACKAGE_NAME
-        multiDexEnabled false
-        vectorDrawables.useSupportLibrary = true
-        buildConfigField 'String', 'EXT_PACKAGE_NAME', '"' + rootProject.ext.EXT_PACKAGE_NAME + '"'
-        manifestPlaceholders = [
-                VA_ACCESS_PERMISSION_NAME: rootProject.ext.VA_ACCESS_PERMISSION_NAME,
-                SharedUserId: rootProject.ext.PACKAGE_NAME,
-                ps_appid: "${android.defaultConfig.applicationId}",
-        ]
-        if (rootProject.ext.VA_MAIN_PACKAGE_32BIT) {
-            ndk.abiFilters = ["armeabi-v7a"]
-        } else {
-            ndk.abiFilters = ["arm64-v8a"]
-        }
-
-        resValue('string', 'app_name', appName)
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
     }
 
-    packagingOptions {
-        jniLibs {
-            useLegacyPackaging = true
+    // 详细日志输出
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
         }
     }
-
-    lintOptions {
-        abortOnError false
-    }
-
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-    }
-
-    signingConfigs {
-        rummy {
-            storeFile = file(jksPath)
-            keyPassword = jksPass
-            storePassword = jksPass
-            keyAlias = jksAlias
-        }
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            debuggable = false
-            signingConfig signingConfigs.rummy
-        }
-        debug {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            debuggable = true
-            signingConfig signingConfigs.rummy
-        }
-    }
-    compileOptions {
-        targetCompatibility = '1.8'
-        sourceCompatibility = '1.8'
-    }
-
 }
 
-dependencies {
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'com.google.android.material:material:1.1.0'
-    implementation 'com.squareup.okhttp3:okhttp:3.8.0'
+allprojects {
+    repositories {
+//        maven { url 'http://192.168.1.233:8081/repository/rummy_maven_central/' }
+//        maven { url 'http://192.168.1.233:8081/repository/rummy_google/' }
+//        maven { url 'http://192.168.1.233:8081/repository/rummy_jcenter/' }
+//        maven { url 'http://192.168.1.233:8081/repository/paytm_local/' }
+        maven { url 'https://jitpack.io/' }
 
-    implementation project(':b_sdk')
+        mavenCentral()
+        google()
+        jcenter()
+    }
+}
 
-    implementation 'com.google.code.gson:gson:2.8.6' // gson
-    implementation 'com.google.api-client:google-api-client:1.30.3' // GoogleCredential
-
-    implementation "androidx.viewpager2:viewpager2:1.0.0"
-    implementation 'com.github.lzyzsd:jsbridge:1.0.4'
-
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }

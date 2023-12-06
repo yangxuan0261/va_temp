@@ -1,0 +1,4 @@
+<resources>
+    <string name="google_login_app_id">1086444997895-6blfb63dstdjh9v9vfs1e530pl170sdn.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">2407968469238187</string> <string name="fb_login_protocol_scheme">fb2407968469238187</string>
+</resources>
